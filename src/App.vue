@@ -1,72 +1,120 @@
 <template>
   <div id="app">
-     
-      <b-navbar id='nav' toggleable="sm" type="dark" variant="dark">
-        <b-navbar-brand to="/welcomePage">SPACE</b-navbar-brand>
+
+    <div>
+      <b-navbar b-navbar id='nav' toggleable="sm" type="dark" variant="dark">
+        <div class="container-fluid">
 
 
-          <b-navbar-nav class="ml-auto">
-            <b-nav-item v-if="!token" to="/register">Register</b-nav-item>
-            <b-nav-item v-if="!token" to="/login">Log In</b-nav-item>
-            <b-nav-item v-else @click="logout()">Log Out</b-nav-item>
+        <b-navbar-brand to="/">SPACE</b-navbar-brand>
+          <span v-if="token">
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+        <b-collapse id="nav-collapse" is-nav>
 
 
-            
+
+          <b-navbar-nav>
+            <b-nav-item to="/">Home</b-nav-item>
+
+          <b-nav-item-dropdown  text="RADNA MESTA">
+              <b-dropdown-item
+                  v-for="dep in rMesta"
+                  :key="dep.id"
+                  :to="`/rMesta/${dep.id}/${dep.naziv}`">
+                {{ dep.naziv }}
+              </b-dropdown-item>
+            </b-nav-item-dropdown>
+            <b-nav-item-dropdown  text="DOSTUPNI KURSEVI">
+              <b-dropdown-item
+                  v-for="dep in kursevi"
+                  :key="dep.id"
+                  :to="`/zaposleni/${dep.id}/${dep.naziv}`">
+                {{ dep.naziv }}
+              </b-dropdown-item>
+            </b-nav-item-dropdown>
           </b-navbar-nav>
+        </b-collapse>
 
+          </span>
+
+
+
+            <b-navbar-nav class="ml-auto">
+              <b-nav-item v-if="!token" to="/register">Register</b-nav-item>
+              <b-nav-item v-if="!token" to="/login">Log In</b-nav-item>
+              <b-nav-item v-else @click="logout()">Log Out</b-nav-item>
+              <b-nav-item v-if="token" to="/profilePage">My Profile</b-nav-item>
+
+            </b-navbar-nav>
+             <form class=" form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+              </form>
+
+        </div>
       </b-navbar>
 
 
-    <Section />
+    </div>
+    <div>
+
+
+
+     </div>
     <router-view/>
   </div>
 </template>
 
 <script>
-import Heder from '@/components/Heder.vue'
 
-import Section from './components/Section.vue'
+import Table from "@/components/Table";
+import WPage from "@/components/WPage";
 import { mapActions, mapState, mapMutations } from 'vuex';
 export default {
   name: 'App', 
   components: {
+      WPage,
+    Table
   },
 
-  /*, data(){
-     return{
-
-     }
-}/*,
-   mounted(){
-     fetch('http://127.0.0.1:8081/listUsers')
-       .then( obj => obj.json() )
-      .then(res => {
-
-      })
-   }*/
 
   data() {
     return {
+      //key:'departments',
       searchQuery: ''
+
     }
   },
 
   computed: {
     ...mapState([
-
+     'zaposleni',
+      'kursevi',
+      'rMesta',
       'token'
     ])
   },
 
   mounted() {
-   // this.fetchDepartments();
-
+    this.loadZaposleni();
+    this.loadRMesta();
+    this.loadKurseve();
     if (localStorage.token) {
       this.setToken(localStorage.token);
     }
+
+    console.log("sad"+this.token+"asd")
   },
 
   methods: {
+
+...mapActions([
+        'loadZaposleni',
+        'loadRMesta',
+        'loadKurseve'
+      ]),
+
+
 
     ... mapMutations([
       'removeToken',
@@ -99,7 +147,7 @@ export default {
  
 </script>
 
-<style>
+<style >
   #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -108,8 +156,10 @@ export default {
     color: #2c3e50;
     padding-bottom: 10px;
   }
-  #nav{
+  *#nav{
     padding-left: 10px;
     padding-right: 10px;
   }
+
+
 </style>

@@ -4,7 +4,7 @@
 
     <b-form @submit="onSubmit">
       <b-form-group label="Email:" label-for="email">
-        <b-form-input id="email" v-model="form.email" placeholder="Enter email" required></b-form-input>
+        <b-form-input id="email" v-model="form.email" type="email" placeholder="Enter email" required></b-form-input>
       </b-form-group>
 
       <b-form-group label="Password:" label-for="password">
@@ -44,7 +44,7 @@
         e.preventDefault();
 
         this.login(this.form);
-        this.$router.push({ name: 'Home Page' });
+        this.$router.push({ name: 'App' });
       }
     }
   }

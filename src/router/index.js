@@ -3,14 +3,19 @@ import VueRouter from 'vue-router'
 import Register from '@/views/Register.vue';
 import Login from '@/views/Login.vue';
 import ProfilePage from "@/views/ProfilePage";
-import HomePage from "@/views/HomePage";
+
 import WelcomePage from "@/views/WelcomePage";
+import Home from "@/views/Home";
 
 
 Vue.use(VueRouter)
 
 const routes = [
- 
+  {
+    path: '/',
+    name: 'Home',
+    component: Home
+  },
   {
     path: '/register',
     name: 'Register',
@@ -23,14 +28,10 @@ const routes = [
   },
   {
     path: '/profilePage',
-    name: 'Profile Page',
+    name: 'ProfilePage',
     component: ProfilePage
   },
-  {
-    path: '/HomePage',
-    name: 'Home Page',
-    component: HomePage
-  },
+
   {
     path: '/welcomePage',
     name: 'Welcome Page',
